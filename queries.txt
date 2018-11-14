@@ -1,0 +1,144 @@
+all attribut in <> are argument that you need to change with what you want to do
+
+!! be carefull, you cannot add job situation with our rules, there are directly added at the creation of the database.
+
+INSERT Employe
+
+Insert into Person (LastName,FirstName,Address,City,Zip_Code,Phone) values ('<lastName>','<firstName>','<address>','<city>',<zip_Code>,<phone>);
+Insert into Salaried values ((Select Code_Person From Person Where LastName like '<lastName>' and FirstName like '<firstName>'),'<login>','<password>');
+Insert into Occupy values ((Select Code_Person From Salaried Where Login like <login>),(Select Code_Situation From Situation Where Situation_Label like <situation>));
+
+
+LIST OF Shop
+
+Select Shop.City, Shop.Address, Person.FirstName, Person.LastName 
+From Shop
+Inner Join Is_Salaried On Shop.Code_Shop=Is_Salaried.Code_Shop
+Inner Join Salaried On Is_Salaried.Code_Person=Salaried.Code_Person
+Inner Join Person On Person.Code_Person = Salaried.Code_Person
+Inner Join Occupy On Salaried.Code_Person =  Occupy.Code_Person
+Inner Join Situation On Occupy.Code_Situation = Situation.Code_Situation
+Where Situation.Situation_Label like 'gerant'
+Order by Shop.City ASC;
+
+
+ADD Shop
+
+Insert into Shop (Address,City,Zip_Code,Email) values (<Address>,<City>,<Zip_Code>,<Email>);
+Insert into Is_Salaried values((Select Code_Person From Person Where LastName like '<lastName>' and FirstName like '<firstName>' Inner join Salaried On Person.Code_Person=Salaried.Code_Person),(Select Code_Shop From Shop Where Address like '<address>'));
+Update Occupy
+Inner Join Salaried On Salaried.Code_Person =  Occupy.Code_Person
+Inner Join Person On Person.Code_Person = Salaried.Code_Person
+Set Code_Situation = (select Code_Situation From Situation where Situation_Label like 'gerant')
+Where Person.LastName like '<lastName>' and Person.FirstName like '<firstName>';
+
+
+SEARCH Employe BY Name
+
+Select LastName, FirstName, Address, Zip_Code, City, Phone
+From Person 
+Inner join Salaried On Person.Code_Person=Salaried.Code_Person
+Where Person.LastName like '<lastName>';
+
+
+SEARCH Shop BY City
+
+Select Address, Zip_Code, City, Email 
+From Shop
+Where City like '<city>';
+
+
+SEARCH Shop BY Name
+
+Select Shop.City from Shop 
+Inner Join Is_Salaried On Is_Salaried.Code_Shop=Shop.Code_Shop 
+Inner Join Salaried On Salaried.Code_Person=Is_Salaried.Code_Person 
+Inner Join Person On Person.Code_Person=Salaried.Code_Person 
+Where Person.FirstName like '<firstname>' and Person.LastName like '<lastname>';
+
+
+SEARCH Employe none Manager
+
+select Person.LastName, Person.FirstName from Person
+Inner Join Salaried On Salaried.Code_Person=Person.Code_Person
+Inner Join Occupy On Occupy.Code_Person=Salaried.Code_Person
+Inner Join Situation On Situation.Code_Situation=Occupy.Code_Situation
+Where Situation_Label not like 'PurchaseManager' and Situation_Label not like 'ShopManager';
+
+
+INSERT Machine
+
+Insert into Product (Label,Price,Description) values ('<label>',<price>,'<description>');
+Insert into Cofee_Machine values (Select Code_Product From Product Where Label like '<label>');
+Call product_in_all_shop((Select Code_Product From Product Where Label like '<label>'),<quantity>);
+
+
+INSERT Machine BY Shop
+
+Insert into Product (Label,Price,Description) values ('<label>',<price>,'<description>');
+Insert into Cofee_Machine values (Select Code_Product From Product Where Label like '<label>');
+Insert into Stock (Code_Shop, Code_Product, Quantity) values ((Select Code_Shop From Shop Where Address like '<address>'),(Select Code_Product From Product Where Label like '<label>'),<quantity>);
+
+
+INSERT Cap
+
+Insert into Product (Label,Price,Description) values ('<label>',<price>,'<description>');
+Insert into Cap values ((Select Code_Product From Product Where Label like '<label>'), <quantity_cap>);
+Call product_in_all_shop((Select Code_Product From Product Where Label like '<label>'),<quantity>);
+
+
+INSERT Cap BY Shop
+
+Insert into Product (Label,Price,Description) values ('<label>',<price>,'<description>');
+Insert into Cap values ((Select Code_Product From Product Where Label like '<label>'), <quantity_cap>);
+Insert into Stock (Code_Shop, Code_Product, Quantity) values ((Select Code_Shop From Shop Where Address like '<address>'),(Select Code_Product From Product Where Label like '<label>'),<quantity>);
+
+
+INSERTION Client
+
+Insert into Person (LastName,FirstName,Address,City,Zip_Code,Phone) values ('<lastName>','<firstName>','<address>','<city>',<zip_Code>,<phone>);
+Insert into Client values ((Select Code_Person From Person Where LastName like '<lastName>' and FirstName like '<firstName>'));
+
+
+INSERT Command FOR A Client
+
+Insert into Command (Date, Code_Person) values ('<xx/xx/xxxx>',(Select Client.Code_Person From Client Inner join Person On Person.Code_Person=Client.Code_Person Where Person.FirstName like '<firstname>' and Person.LastName like '<lastname>'));
+// --------- TO DO FOR EACH PRODUCT -----------------
+Insert into Contain values ((Select Code_Command from Command Inner Join Client On Client.Code_Person=Command.Code_Person Inner join Person On Person.Code_Person=Client.Code_Person Where Person.FirstName like '<firstname>' and Person.LastName like '<lastname>'), (Select Code_Product From Product where Label like '<label>'), <quantity>);
+update Stock set Quantity = <quantity> where Code_Shop = (select Shop.Code_Shop from Shop inner join Is_Salaried on Is_Salaried.Code_Shop = Shop.Code_Shop inner join Salaried on Salaried.Code_Person = Is_Salaried.Code_Person where Salaried.Login like '<login>') and Code_Product = (select Code_Product from Product where Label like '<label>');
+//------------------------------------------------------
+
+
+
+INSERT Holiday FOR Employe
+
+Insert into Holiday (Begin_Date, End_Date, Code_Person) values ('<xx/xx/xxxx>','<xx/xx/xxxx>',(Select Salaried.Code_Person From Salaried Inner Join Person On Person.Code_Person=Salaried.Code_Person Where Person.LastName like '<lastname>' and Person.FirstName like '<firstname>'));
+
+
+SEARCH Stock OF Product IN Shop
+
+select Shop.Address, Product.Label, Stock.Quantity from Stock inner join Shop on Shop.Code_Shop = Stock.Code_Shop inner join Product on Product.Code_Product = Stock.Code_Product where Shop.City like '<city>' and Product.Label like '<label>';
+
+
+MODIFICATION Stock OF A Product IN Shop
+
+update Stock set Quantity = <quantity> where Code_Shop = (select Code_Shop from Shop where Address like '<address>') and Code_Product = (select Code_Product from Product where Label like '<label>');
+
+
+SELECT A Manager FOR A Shop
+
+Select Person.FirstName, Person.LastName From Person
+Inner join Salaried On Salaried.Code_Person=Person.Code_Person
+Inner Join Is_Salaried On Is_Salaried.Code_Person=Salaried.Code_Person
+Inner join Shop On Shop.Code_Shop=Is_Salaried.Code_Shop
+Inner join Occupy On Occupy.Code_Person=Salaried.Code_Person
+Inner Join Situation On Situation.Code_Situation=Occupy.Code_Situation
+where Situation.Situation_Label like 'ShopManager' and Shop.Code_Shop=<code_shop>
+
+
+DELETE Holiday FOR AN Employe
+
+Delete from Holiday 
+Inner join Salaried On Salaried.Code_Person=Holiday.Code_Person
+Inner join Person On Salaried.Code_Person=Person.Code_Person
+where Person.FisrtName like '<firstname>' and Person.LastName like '<lastname>' and Holiday.Begin_Date like '<xx/xx/xxxx>'
