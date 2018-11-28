@@ -100,7 +100,7 @@ mysql> SELECT * FROM shop WHERE price=@min_price OR price=@max_price;
 - **mysql**
   command line tool
 - **mysqladmin**
-  client preforming administrative operation
+  client preforming administrative operation. see more [details](https://dev.mysql.com/doc/refman/8.0/en/mysqladmin.html)
 - **mysqlcheck**
   checks, repairs, analyzes, and optimizes tables
 - **mysqldump**
@@ -111,3 +111,5 @@ mysql> SELECT * FROM shop WHERE price=@min_price OR price=@max_price;
   dumps a MySQL database into a file as SQL
 
 see more at this [link](https://dev.mysql.com/doc/refman/8.0/en/programs-overview.html)
+
+## 
