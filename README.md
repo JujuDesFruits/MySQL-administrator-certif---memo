@@ -139,3 +139,32 @@ to obtain theses fonctions du
 ```
 SELECT * FROM performance_schema.metaphon
 ```
+
+## Tips
+
+### From mysql
+to get info from mysql deamon
+```
+status;
+```
+list connection to mysql server
+```
+show processlist;
+```
+create user and grant priviledges
+```
+create user '<username>'@'<servername>' identified by '<password>';
+```
+```
+grant all on <databasename>.<tables(default is "*")> to '<username>' identified by '<password>';
+```
+to refresh priviledges
+```
+flush priviledges;
+```
+
+
+
+exercices done:   
+- [wisdomjobs](https://www.wisdomjobs.com/e-university/mysql-tutorial-275.html)
+- [autre](#)
