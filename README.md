@@ -114,9 +114,28 @@ see more at this [link](https://dev.mysql.com/doc/refman/8.0/en/programs-overvie
 
 ## MySQL server Administration
 
-### MySQL server
-
 **mysqld** is the deamon to configure MySQL server.
 ```
 mysqld --verbose --help
+```
+The line above get you all variables from mysql.   
+To startup config could be check with the command just below:
+```
+mysqld --validate-config
+```
+to see much more parameter to use **mysqld** click on this [link](https://dev.mysql.com/doc/refman/8.0/en/server-option-variable-reference.html)
+
+concerning log, you could find them in database **mysql** table **general_log**   
+
+User can create function in mysql like this
+```
+CREATE FUNCTION metaphon
+  RETURNS STRING
+  SONAME 'udf_example.so';
+
+DROP FUNCTION metaphon
+```
+to obtain theses fonctions du
+```
+SELECT * FROM performance_schema.metaphon
 ```
