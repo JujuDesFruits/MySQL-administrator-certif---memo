@@ -61,10 +61,10 @@ LOAD DATA LOCAL INFILE '*/path/data.txt*' INTO TABLE *t1*
 ```
 
 ### Pattern Matching
-t%=thanks/this and %t=bot/commit
-(\_)could be any character size one
-[abc]=match a, or b or c
-[a-z]=match any letter [0-9]=any digit
+t%=thanks/this and %t=bot/commit   
+(\_)could be any character size one    
+[abc]=match a, or b or c    
+[a-z]=match any letter [0-9]=any digit    
 ```
 SELECT * FROM *t1* WHERE REGEXP_LIKE(*t1*, '[abc]')
 ```
@@ -112,4 +112,11 @@ mysql> SELECT * FROM shop WHERE price=@min_price OR price=@max_price;
 
 see more at this [link](https://dev.mysql.com/doc/refman/8.0/en/programs-overview.html)
 
-## 
+## MySQL server Administration
+
+### MySQL server
+
+**mysqld** is the deamon to configure MySQL server.
+```
+mysqld --verbose --help
+```
