@@ -168,3 +168,11 @@ flush priviledges;
 exercices done:   
 - [wisdomjobs](https://www.wisdomjobs.com/e-university/mysql-tutorial-275.html)
 - [autre](#)
+
+
+### way to improve sql queries
+
+- work on execution plan
+- partitioning table
+- creation of index
+- don't drop but [TRUNCATE](https://sql.sh/cours/truncate-table) table
